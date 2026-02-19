@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройки применены</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Google Analytics и Yandex Metrika будут подключены через analytics.js -->
+</head>
+<body>
+    <div class="container">
+        <div class="success-message">
+            <h1 class="title">Настройки применены</h1>
+            <p class="description">Ваш выбор сохранен</p>
+        </div>
+    </div>
+    <script src="analytics.js"></script>
+    <script>
+        // Отправка события просмотра финальной страницы
+        if (typeof sendAnalyticsEvent === 'function') {
+            sendAnalyticsEvent('7244_end_page_view_var1');
+        }
+    </script>
+</body>
+</html>
