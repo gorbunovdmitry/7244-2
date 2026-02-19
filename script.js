@@ -65,7 +65,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const accountNumberBtn = document.querySelector('[data-filter="account-number"]');
         const cardNumberBtn = document.querySelector('[data-filter="card-number"]');
         
-        // Дизейблим взаимоисключающие опции
+        // Сбрасываем состояние всех кнопок
+        fromAccountBtn.disabled = false;
+        fromAccountBtn.style.opacity = '1';
+        fromAccountBtn.style.cursor = 'pointer';
+        fromCardBtn.disabled = false;
+        fromCardBtn.style.opacity = '1';
+        fromCardBtn.style.cursor = 'pointer';
+        accountNumberBtn.disabled = false;
+        accountNumberBtn.style.opacity = '1';
+        accountNumberBtn.style.cursor = 'pointer';
+        cardNumberBtn.disabled = false;
+        cardNumberBtn.style.opacity = '1';
+        cardNumberBtn.style.cursor = 'pointer';
+        
+        // Правило 1: Если выбран "Со счета" → дизейблим "С карты" и "Номер карты"
         if (activeFilters.includes('from-account')) {
             fromCardBtn.disabled = true;
             fromCardBtn.style.opacity = '0.5';
@@ -73,15 +87,9 @@ document.addEventListener('DOMContentLoaded', function() {
             cardNumberBtn.disabled = true;
             cardNumberBtn.style.opacity = '0.5';
             cardNumberBtn.style.cursor = 'not-allowed';
-        } else {
-            fromCardBtn.disabled = false;
-            fromCardBtn.style.opacity = '1';
-            fromCardBtn.style.cursor = 'pointer';
-            cardNumberBtn.disabled = false;
-            cardNumberBtn.style.opacity = '1';
-            cardNumberBtn.style.cursor = 'pointer';
         }
         
+        // Правило 2: Если выбран "С карты" → дизейблим "Со счета" и "Номер счета"
         if (activeFilters.includes('from-card')) {
             fromAccountBtn.disabled = true;
             fromAccountBtn.style.opacity = '0.5';
@@ -89,13 +97,20 @@ document.addEventListener('DOMContentLoaded', function() {
             accountNumberBtn.disabled = true;
             accountNumberBtn.style.opacity = '0.5';
             accountNumberBtn.style.cursor = 'not-allowed';
-        } else {
-            fromAccountBtn.disabled = false;
-            fromAccountBtn.style.opacity = '1';
-            fromAccountBtn.style.cursor = 'pointer';
-            accountNumberBtn.disabled = false;
-            accountNumberBtn.style.opacity = '1';
-            accountNumberBtn.style.cursor = 'pointer';
+        }
+        
+        // Правило 3: Если выбран "Номер счета" → дизейблим "С карты"
+        if (activeFilters.includes('account-number')) {
+            fromCardBtn.disabled = true;
+            fromCardBtn.style.opacity = '0.5';
+            fromCardBtn.style.cursor = 'not-allowed';
+        }
+        
+        // Правило 4: Если выбран "Номер карты" → дизейблим "Со счета"
+        if (activeFilters.includes('card-number')) {
+            fromAccountBtn.disabled = true;
+            fromAccountBtn.style.opacity = '0.5';
+            fromAccountBtn.style.cursor = 'not-allowed';
         }
     }
     
@@ -181,8 +196,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Если выбираем "С карты", убираем "Со счета"
                     document.querySelector('[data-filter="from-account"]').classList.remove('active');
                 }
+            } else if (filter === 'account-number') {
+                if (willBeActive) {
+                    // Если выбираем "Номер счета", убираем "С карты"
+                    document.querySelector('[data-filter="from-card"]').classList.remove('active');
+                }
+            } else if (filter === 'card-number') {
+                if (willBeActive) {
+                    // Если выбираем "Номер карты", убираем "Со счета"
+                    document.querySelector('[data-filter="from-account"]').classList.remove('active');
+                }
             }
-            // "Номер счета" и "Номер карты" можно выбирать независимо
             
             // Не позволяем кликать на disabled кнопки
             if (this.disabled) {
