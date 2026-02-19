@@ -99,18 +99,24 @@ document.addEventListener('DOMContentLoaded', function() {
             accountNumberBtn.style.cursor = 'not-allowed';
         }
         
-        // Правило 3: Если выбран "Номер счета" → дизейблим "С карты"
+        // Правило 3: Если выбран "Номер счета" → дизейблим "С карты" и "Номер карты"
         if (activeFilters.includes('account-number')) {
             fromCardBtn.disabled = true;
             fromCardBtn.style.opacity = '0.5';
             fromCardBtn.style.cursor = 'not-allowed';
+            cardNumberBtn.disabled = true;
+            cardNumberBtn.style.opacity = '0.5';
+            cardNumberBtn.style.cursor = 'not-allowed';
         }
         
-        // Правило 4: Если выбран "Номер карты" → дизейблим "Со счета"
+        // Правило 4: Если выбран "Номер карты" → дизейблим "Со счета" и "Номер счета"
         if (activeFilters.includes('card-number')) {
             fromAccountBtn.disabled = true;
             fromAccountBtn.style.opacity = '0.5';
             fromAccountBtn.style.cursor = 'not-allowed';
+            accountNumberBtn.disabled = true;
+            accountNumberBtn.style.opacity = '0.5';
+            accountNumberBtn.style.cursor = 'not-allowed';
         }
     }
     
@@ -198,13 +204,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } else if (filter === 'account-number') {
                 if (willBeActive) {
-                    // Если выбираем "Номер счета", убираем "С карты"
+                    // Если выбираем "Номер счета", убираем "С карты" и "Номер карты"
                     document.querySelector('[data-filter="from-card"]').classList.remove('active');
+                    document.querySelector('[data-filter="card-number"]').classList.remove('active');
                 }
             } else if (filter === 'card-number') {
                 if (willBeActive) {
-                    // Если выбираем "Номер карты", убираем "Со счета"
+                    // Если выбираем "Номер карты", убираем "Со счета" и "Номер счета"
                     document.querySelector('[data-filter="from-account"]').classList.remove('active');
+                    document.querySelector('[data-filter="account-number"]').classList.remove('active');
                 }
             }
             
