@@ -143,34 +143,54 @@ document.addEventListener('DOMContentLoaded', function() {
                 parts.push('Счет');
             }
         } else if (activeFilters.includes('from-card')) {
-            if (activeFilters.includes('operation-type')) {
-                parts.push(messageParts['from-card']);
+            // Если не выбран "тип операции", пишем "Счет карты"
+            if (!activeFilters.includes('operation-type')) {
+                parts.push('Счет карты');
             } else {
-                // Если тип операции не выбран, заменяем "со счета карты" на "Карта"
-                parts.push('Карта');
+                // Иначе добавляем "со счета карты" дословно
+                parts.push(messageParts['from-card']);
             }
         }
         
         // Номер счета или карты (можно выбрать независимо от "со счета"/"со счета карты")
+        // Добавляем двоеточие только если после номера будут другие блоки
         if (activeFilters.includes('account-number')) {
-            parts.push(messageParts['account-number']);
+            let accountNumber = messageParts['account-number'];
+            // Проверяем, будут ли после номера счета другие части
+            const hasMoreAfterAccount = activeFilters.includes('operation-amount') || 
+                                       activeFilters.includes('merchant') || 
+                                       activeFilters.includes('balance');
+            if (hasMoreAfterAccount) {
+                accountNumber += ':';
+            }
+            parts.push(accountNumber);
         }
         if (activeFilters.includes('card-number')) {
-            parts.push(messageParts['card-number']);
+            let cardNumber = messageParts['card-number'];
+            // Проверяем, будут ли после номера карты другие части
+            const hasMoreAfterCard = activeFilters.includes('operation-amount') || 
+                                    activeFilters.includes('merchant') || 
+                                    activeFilters.includes('balance');
+            if (hasMoreAfterCard) {
+                cardNumber += ':';
+            }
+            parts.push(cardNumber);
         }
         
-        // Сумма операции (с двоеточием и пробелом после него, если есть предыдущие части)
+        // Сумма операции (без двоеточия)
         if (activeFilters.includes('operation-amount')) {
-            if (parts.length > 0) {
-                parts.push(':' + ' ' + messageParts['operation-amount']);
-            } else {
-                parts.push(messageParts['operation-amount']);
-            }
+            parts.push(messageParts['operation-amount']);
         }
         
         // Магазин или организация
+        // Если перед магазином нет других слов, убираем "в"
         if (activeFilters.includes('merchant')) {
-            parts.push(messageParts['merchant']);
+            if (parts.length === 0) {
+                // Если нет других частей, убираем "в&nbsp;" из merchant
+                parts.push('Alfastore');
+            } else {
+                parts.push(messageParts['merchant']);
+            }
         }
         
         // Баланс
