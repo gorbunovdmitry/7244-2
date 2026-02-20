@@ -46,10 +46,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const messageParts = {
         'operation-type': 'Покупка',
         'from-account': 'со счета',
-        'account-number': '*1234',
-        'operation-amount': '10&nbsp;RUB',
-        'from-card': 'с карты',
-        'card-number': '*6789',
+        'account-number': '*0000',
+        'operation-amount': '10р',
+        'from-card': 'со счета карты',
+        'card-number': '*1111',
         'merchant': 'в&nbsp;Alfastore',
         'balance': 'Баланс: 1234,45p'
     };
@@ -133,8 +133,8 @@ document.addEventListener('DOMContentLoaded', function() {
             parts.push(messageParts['operation-type']);
         }
         
-        // Со счета или С карты (взаимоисключающие)
-        // Если не выбран тип операции, заменяем "со счета" на "Счет" и "с карты" на "Карта"
+        // Со счета или Со счета карты (взаимоисключающие)
+        // Если не выбран тип операции, заменяем "со счета" на "Счет" и "со счета карты" на "Карта"
         if (activeFilters.includes('from-account')) {
             if (activeFilters.includes('operation-type')) {
                 parts.push(messageParts['from-account']);
@@ -146,12 +146,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (activeFilters.includes('operation-type')) {
                 parts.push(messageParts['from-card']);
             } else {
-                // Если тип операции не выбран, заменяем "с карты" на "Карта"
+                // Если тип операции не выбран, заменяем "со счета карты" на "Карта"
                 parts.push('Карта');
             }
         }
         
-        // Номер счета или карты (можно выбрать независимо от "со счета"/"с карты")
+        // Номер счета или карты (можно выбрать независимо от "со счета"/"со счета карты")
         if (activeFilters.includes('account-number')) {
             parts.push(messageParts['account-number']);
         }
